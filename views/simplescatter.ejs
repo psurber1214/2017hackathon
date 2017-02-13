@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="D3byEX 6.1" />
+    <meta charset="utf-8">
+	<style>
+		circle:hover{
+			opacity: .35;
+		}
+	</style>
+	<link rel="stylesheet" href="/dc.css" type="text/css" >
+	  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+</head>
+
+<body ng-app="BlankApp" ng-cloak>
+<p>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-aria.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+  
+  <script src="http://ngmaterial.assets.s3.amazonaws.com/svg-assets-cache.js"></script>
+  
+  <!-- Angular Material Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.js"></script>
+
+
+<div ng-controller="DemoCtrl as ctrl" layout="column" ng-cloak="" class="autocompletedemoBasicUsage" ng-app="MyApp">
+  <md-content class="md-padding">
+    <form ng-submit="$event.preventDefault()">
+      <p>Use <code>md-autocomplete</code> to search for matches from local or remote data sources.</p>
+      <md-autocomplete ng-disabled="ctrl.isDisabled" md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text-change="ctrl.searchTextChange(ctrl.searchText)" md-search-text="ctrl.searchText" md-selected-item-change="ctrl.selectedItemChange(item)" md-items="item in ctrl.querySearch(ctrl.searchText)" md-item-text="item.display" md-min-length="0" placeholder="What is your favorite US state?">
+        <md-item-template>
+          <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+        </md-item-template>
+        <md-not-found>
+          No states matching "{{ctrl.searchText}}" were found.
+          <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+        </md-not-found>
+      </md-autocomplete>
+      <br>
+      <md-checkbox ng-model="ctrl.simulateQuery">Simulate query for results?</md-checkbox>
+      <md-checkbox ng-model="ctrl.noCache">Disable caching of queries?</md-checkbox>
+      <md-checkbox ng-model="ctrl.isDisabled">Disable the input?</md-checkbox>
+
+      <p>By default, <code>md-autocomplete</code> will cache results when performing a query.  After the initial call is performed, it will use the cached results to eliminate unnecessary server requests or lookup logic. This can be disabled above.</p>
+    </form>
+  </md-content>
+</div>
+
+<!--
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
+-->
+
+	<div id="schart">Chart</div>
+    <script src="/d3.js"></script>
+   <script src="/crossfilter.js"> </script>
+    <script src="/dc.js"> </script>
+    <script>
+	
+	var strikeChart = dc.scatterPlot("#schart");
+	var url = "/pitcher.json";
+	
+	//var data = 
+	
+	var data = <%- JSON.stringify(data) %>;
+    d3.json(url/*data*/, function(error, rawData) {
+
+    	//var ndx = crossfilter(rawData);
+		var ndx = crossfilter(data);
+    	var all = ndx.groupAll();
+
+    	var locationDimension = ndx.dimension(function(d){
+    		return [d.px, d.pz, d.pitchResult];
+    	});
+
+    	var locationGroup = locationDimension.group();
+
+    	var colorScale = d3.scale.ordinal()
+    .domain(["B", "SS", "SL", "IP", "F"]) // recipe names
+.range(["#FF0000", "#00FF00", "#0000FF", "#000000", "#DDDD23"]);
+
+    	strikeChart.width(500)
+    	.height(500)
+    	.x(d3.scale.linear().domain([-4,4]))
+    	.yAxisLabel("y")
+    //	.xAxisLabel("x")
+    	.dimension(locationDimension)
+    	.excludedOpacity(.7)
+    	.group(locationGroup)
+    	.brushOn(false)
+    	.colorAccessor(function(d){
+    		return d.key[2];
+    	})
+    	.title(function(d){
+    		return d.key[2];
+    	});
+
+    	dc.renderAll();
+
+    	/*strikeChart.width(400)
+    	.height(400)
+    	.x(d3.scale.linear().domain[-4, 4])
+    	.y(d3.scale.linear().domain[-.4, 8])
+    	.yAxisLabel("Height")
+    	.xAxisLabel("Position")
+    	.dimension(locationDimension)
+    	.group(locationGroup)
+    	.excludedOpacity(.7);*/
+
+
+	
+		
+      /*  var data = rawData.map(function(d) {
+            return { V: +d.releaseVelocity, X: +d.px, Y: +d.pz }
+        });
+
+        var xExtents = d3.extent(data, function (d) { return d.X; });
+        var yExtents = d3.extent(data, function (d) { return d.Y; });
+
+		var concatExtents = xExtents.concat(yExtents);
+        var maxExtent = d3.max(
+            xExtents.concat(yExtents), function(d) { 
+			return Math.abs(d); 
+			});
+
+			
+		var color = d3.scale.linear().domain([60, 105])
+			.interpolate(d3.interpolateHcl)
+			.range([d3.rgb('#0000ff'), d3.rgb('#ff0000')]);
+			
+			
+        var graphWidth = 400, graphHeight = 400;
+        var radius = 5;
+
+        var scale = d3.scale.linear()
+            .domain([-maxExtent, maxExtent])
+            .range([0, graphWidth]);
+
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('width', graphWidth)
+            .attr('height', graphHeight);
+			
+		
+		var rectangle = svg.append("rect")
+		.attr("x", 100)
+		.attr("y", 100)
+		.attr("width", 200)
+		.attr("height", 200);
+		
+
+        svg.selectAll('circle')
+            .data(data)
+            .enter()
+            .append('circle')
+			.style("fill", function(d){
+			return color(d.V);})
+			.style('stroke', 'black')
+			.style('stroke-width', '1')
+            .attr({
+                cx: function(d) {return scale(d.X); },
+                cy: function(d) { return scale(d.Y); },
+                r: radius
+            })
+			.append("svg:title")
+			.text(function(d) {return ""+d.X+","+d.Y;})
+			.on("mouseover", function() {
+				d3.select(this).classed("hover", true);
+			})
+			.on("mouseout", function() {
+				d3.select(this).classed("hover", false);
+			});*/
+    });
+
+
+    </script>
+	
+	
+	
+	<script>(function () {
+  'use strict';
+  angular
+      .module('BlankApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache'])
+      .controller('DemoCtrl', DemoCtrl);
+
+  function DemoCtrl ($timeout, $q, $log) {
+    var self = this;
+
+    self.simulateQuery = false;
+    self.isDisabled    = false;
+
+    // list of `state` value/display objects
+    self.states        = loadAll();
+    self.querySearch   = querySearch;
+    self.selectedItemChange = selectedItemChange;
+    self.searchTextChange   = searchTextChange;
+
+    self.newState = newState;
+
+    function newState(state) {
+      alert("Sorry! You'll need to create a Constitution for " + state + " first!");
+    }
+
+    // ******************************
+    // Internal methods
+    // ******************************
+
+    /**
+     * Search for states... use $timeout to simulate
+     * remote dataservice call.
+     */
+    function querySearch (query) {
+      var results = query ? self.states.filter( createFilterFor(query) ) : self.states,
+          deferred;
+      if (self.simulateQuery) {
+        deferred = $q.defer();
+        $timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
+        return deferred.promise;
+      } else {
+        return results;
+      }
+    }
+
+    function searchTextChange(text) {
+      $log.info('Text changed to ' + text);
+    }
+
+    function selectedItemChange(item) {
+      $log.info('Item changed to ' + JSON.stringify(item));
+    }
+
+    /**
+     * Build `states` list of key/value pairs
+     */
+    function loadAll() {
+      var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
+              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
+              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
+              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
+              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
+              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
+              Wisconsin, Wyoming';
+
+      return allStates.split(/, +/g).map( function (state) {
+        return {
+          value: state.toLowerCase(),
+          display: state
+        };
+      });
+    }
+
+    /**
+     * Create filter function for a query string
+     */
+    function createFilterFor(query) {
+      var lowercaseQuery = angular.lowercase(query);
+
+      return function filterFn(state) {
+        return (state.value.indexOf(lowercaseQuery) === 0);
+      };
+
+    }
+  }
+})();</script>
+
+
+</body>
+</html> 

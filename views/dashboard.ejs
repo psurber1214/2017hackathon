@@ -1,0 +1,757 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="../../favicon.ico">
+
+	<title>Patrick Surber & JB Burgdorff TruMedia Submission</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="/dashboard.css" rel="stylesheet">
+	<link href="/dc.css" rel="stylesheet">
+</head>
+
+<body>
+	<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+		<button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		
+
+		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+			<ul class="navbar-nav mr-auto">
+				
+			</ul>
+			
+			<form class="form-inline mt-2 mt-md-0" onSubmit="this.action='http://athwp.tamu.edu:8080/batter/'+this.batter.value">
+				<input list="batters" class="form-control mr-sm-2" type="text" name="batter" placeholder="Batter Search" id="listBatter">
+				<datalist id="batters"> 
+			
+					
+				</datalist>
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
+			</form>
+			
+			<form class="form-inline mt-2 mt-md-0" onSubmit="this.action='http://athwp.tamu.edu:8080/dashboard/'+this.pitcher.value">
+				<input list="pitchers" class="form-control mr-sm-2" type="text" name="pitcher" placeholder="Pitcher Search" id="listPitcher">
+				<datalist id="pitchers"> 
+			
+					
+				</datalist>
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
+			</form>
+		</div>
+	</nav>
+
+	<div class="container-fluid">
+		<div class="row">
+			<main class="col-sm-9 offset col-md-10 offset-md-1 ">
+				<h1 id="pitchersName">Pitcher: </h1>
+
+				<section class="row text-center placeholders" style="min-height:275px">
+				
+					<div class="card">
+						<div class="card-block">
+							<strong class="card-title">Inning</strong>
+							
+						</div>
+						<div style="overflow:auto" class="card-block" id="inningChart2" class = "dc-chart">
+								
+						</div>
+					</div>
+
+					<div class = "card" >
+							<strong class="card-title">Balls</strong>
+							<div class="card-block" style="overflow:auto" id='ballChart' class="dc-chart">
+							<a class="reset" href="javascript:ballChart.filterAll();dc.redrawAll();" style="display: none;">reset</a><br>
+						</div>
+					</div>
+
+					<div class="card">
+						<strong class="card-title">Strikes</strong>
+						<div class="card-block" style="overflow:auto" id='strikeChart' class="dc-chart">
+							<a class="reset" href="javascript:strikeChart.filterAll();dc.redrawAll();" style="display: none;">reset</a><br>
+						</div>
+					</div>
+					
+					<div class="card">
+							<strong>Times Faced</strong>
+						<div class="card-block" style="overflow:auto" id="timesFacedChart" class="dc-chart">
+							<a class="reset" href="javascript:timesFacedChart.filterAll();dc.redrawAll();" style="display: none;">reset</a><br>
+						</div>
+					</div>
+
+					
+					<div class="card">
+							<strong>Deceptiveness</strong>
+						<div class="card-block" style="overflow:auto" id="opChart" class="dc-chart">
+							<a class="reset" href="javascript:opChart.filterAll();dc.redrawAll();" style="display: none;">reset</a><br>
+						</div>
+					</div>
+
+
+ 
+        			<div class="card">
+						<strong class="card-title">Pitch Type</strong>
+						<div class="card-block" style="overflow:auto" id='typeChart' class="dc-chart">
+							<a class="reset" href="javascript:typeChart.filterAll();dc.redrawAll();" style="display: none;">reset</a><br>
+						</div>
+					</div>
+
+					<div class="card">
+						<strong class="card-title"> Batter Handedness</strong>
+						<div class="card-block" style="overflow:auto" id='handedChart' class="dc-chart">
+							
+							<a class="reset" href="javascript:handChart.filterAll();dc.redrawAll();" style="display: none;">reset</a><br>
+						</div>
+					</div>
+
+					<div class="card">
+							<strong class="card-title">Result</strong>
+						<div class = "card-block" style="overflow:auto" id="resultChart" class = "dc-chart">
+        			
+							<a class="reset" href="javascript:playResultChart.filterAll();dc.redrawAll();" style="display: none;">reset</a><br>
+						</div>
+					</div>
+					
+					<div class="card">
+						<div class="card-block">
+							<strong>Pitch Location (in feet)</strong><br>
+							<label><input type="checkbox" id="drawable" onclick="redrawLocation();">Drawable?</label>
+					</div>
+					
+						<div class="card-block" style="overflow:auto" id='locationChart' class="dc-chart">
+						
+						</div>
+					</div>
+
+			
+					<div class="card">
+						<div class="card-block">
+							<strong>Avg Velocity by Inning (mph)</strong>
+						</div>
+						
+						<div class="card-block" style="overflow:auto" id="veloChart" class="dc-chart">
+						
+						</div>
+					</div>
+
+
+					<div class="card">
+						<div class="card-block">
+							<strong>Avg Movement by Inning (inches)</strong>
+						</div>
+						<div class="card-block" style="overflow:auto" id="movementChart" class="dc-chart">
+							
+						</div>
+					</div>
+		</section>
+
+        <section class="row text-center placeholder">
+        			<div class="col-6 col-sm-3 placeholder">
+          
+             
+
+          </div>
+
+        </section>
+
+    </div>
+</main>
+</div>
+</div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <!-- <script>window.jQuery || document.write('<script src="jquery-3.1.1.min.js"><\/script>')</script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <!--<script src="bootstrap/js/bootstrap.min.js"></script>
+	
+	<script src="/boostrap.min.js"></script>-->
+    <script src="/d3.js"></script>
+    <script src="/crossfilter.js"></script>
+    <script src="/dc.js"></script>
+	<script src="/bootstrap.min.js"></script>
+    <script>
+
+		function redrawLocation(){
+			var brush = document.getElementById("drawable").checked;
+			locationChart.brushOn(brush);
+			dc.renderAll();
+			drawStrikeZone();
+		};
+	
+		var data = <%- JSON.stringify(data) %>;
+		var list = <%- JSON.stringify(list) %>
+		var batterList = <%- JSON.stringify(batters) %>;
+		
+		
+		let f = document.getElementById("batters");
+		batterList.forEach(p=>{
+			let child = document.createElement("option");
+			child.setAttribute("value", p.batterId);
+			child.appendChild(document.createTextNode(p.batter));
+			f.appendChild(child);
+		});
+
+		
+		var pitcherName = data[0].pitcher;
+		document.getElementById("pitchersName").append(document.createTextNode(pitcherName));
+		
+		let e = document.getElementById("pitchers");
+		list.forEach(p => {
+			let child = document.createElement("option");
+			child.setAttribute("value", p.pitcherId);
+			child.appendChild(document.createTextNode(p.pitcher));
+			e.appendChild(child);
+		})
+
+    	var typeChart = dc.pieChart('#typeChart');
+    	var ballChart = dc.pieChart('#ballChart');
+    	var strikeChart = dc.pieChart('#strikeChart');
+		var timesFacedChart = dc.pieChart('#timesFacedChart');
+  		var locationChart = dc.scatterPlot('#locationChart');
+  		var inningChart2 = dc.barChart('#inningChart2');
+  		var playResultChart = dc.barChart("#resultChart");
+  		var velocityChart = dc.compositeChart("#veloChart");
+		var movementChart = dc.compositeChart("#movementChart");
+  		var handChart = dc.rowChart('#handedChart');
+		var opChart = dc.rowChart('#opChart');
+
+  		var pitchList = new Array();
+  		var resultsList = new Array();
+		
+		function drawStrikeZone(){
+			var scatterSvg = d3.select('#locationChart svg');
+			var rectangle = scatterSvg.append("rect")
+			.attr("x", 160)
+			.attr("y", 150)
+			.attr("width", 70)
+			.attr("height", 110)
+			.style("fill", "none")
+			.style("stroke-width", "3")
+			.style("stroke", "#000000");
+		}
+
+		var minInning = 20;
+		var maxInning = 0;
+		
+		data.forEach(function(d){
+    		if(Number(minInning) > Number(d.inning))
+    			minInning = Number(d.inning);
+
+    		if(Number(maxInning) < Number(d.inning))
+    			maxInning = Number(d.inning);
+
+    		color = 'blue';
+
+    		d.inning = Number(d.inning);
+
+    		if(pitchList.indexOf(d.pitchType) == -1)
+    			pitchList.push(d.pitchType);
+
+    		if(d.paResult =="")
+    		{
+    			d.paResult = "NA";
+    		}
+
+    		if(d.paResult == "IP_OUT")
+    		{
+    			d.paResult = d.battedBallType;  
+    		}
+
+    		if(resultsList.indexOf(d.paResult) == -1)
+    			resultsList.push(d.paResult);
+
+    		if(d.paResult == "LD")
+    			d.playResult = "LD";
+    		if(d.paResult == "K")
+    			d.playResult = "K";
+    		if(d.paResult == "BB")
+    			d.playResult = "BB";
+    		if(d.paResult == "GB")
+    			d.playResult = "GB";
+    		if(d.paResult == "PU")
+    			d.playResult = "PU";
+    		if(d.paResult == "FB")
+    			d.playResult = "FB";
+    		if(d.paResult == "S")
+    			d.playResult = "S";
+    		if(d.paResult == "D")
+    			d.playResult = "D";
+    		if(d.paResult == "T")
+    			d.playResult = "T";
+    		if(d.paResult=="")
+    			d.playResult="NA";
+			if(d.paResult=="HR")
+				d.playResult="HR";
+				
+				
+			if(d.pz > d.szb && d.pz < d.szt && d.px <.75 && d.px > -.75)
+				d.wasTrueStrike = true;
+			else
+				d.wasTrueStrike = false;
+				
+				
+			d.eye = "WK";
+			if(!d.wasTrueStrike){
+				if(d.pitchResult=="B" || d.pitchResult=="BID" || d.pitchResult =="HBP" || d.pitchResult == "IB" || d.pitchResult == "PO" || d.pitchResult =="AB") 
+					d.eye = "BW";
+				else
+					d.eye = "BS";
+			}else{
+				if(d.pitchResult=="SS" || d.pitchResult=="IP" || d.pitchResult == "F" || d.pitchResult=="FT" || d.pitchResult=="FB" || d.pitchResult=="MB" || d.pitchResult=="CI")
+					d.eye = "SS";
+				else 
+					d.eye = "SW";
+			}
+
+
+			var  ystart = 40;
+			var tstart 	= (-d.vy0 - Math.sqrt(d.vy0*d.vy0 - 2*d.ay*(d.y0-ystart)))/d.ay;
+			
+			var vxstart = d.vx0 + d.ax*tstart;
+			var vystart= d.vy0 + d.ay*tstart;
+			var vzstart = d.vz0 + d.az*tstart;
+			
+			var time = (-vystart - Math.sqrt(vystart*vystart - 2*d.ay*(ystart-17/12)))/d.ay;
+			
+			var vxbar = (2*vxstart + d.ax*time)/2;
+			var vybar = (2*vystart+d.ay*time)/2;
+			var vzbar = (2*vzstart+d.az*time)/2;
+			var vbar = Math.sqrt(vxbar*vxbar + vybar*vybar+ vzbar*vzbar);
+			
+			var adrag = Math.abs (d.ax*vxbar+d.ay*vybar+(d.az+32.179)*vzbar)/vbar;
+			
+			var vbar2 = vbar/1.467;
+			
+			var amagx = d.ax+adrag*vxbar/vbar;
+			var amagy = d.ay+adrag*vybar/vbar;
+			var amagz = d.az + adrag*vzbar/vbar+32.179;
+			
+			d.xMovement = .5*amagx*time*time*12;
+			d.zMovement = .5*amagz*time*time*12;
+		});
+
+		resultsList.splice(resultsList.indexOf(""),1);
+		resultsList.splice(resultsList.indexOf(null), 1);
+
+		var ndx = crossfilter(data);
+		var all = ndx.groupAll();
+
+		var locationDimension = ndx.dimension(function (d) {
+			return [d.px, d.pz, d.pitchResult, d.inning, d.releaseVelocity, d.pitchType, d.playResult, d.balls, d.strikes, d.batter];
+		});
+
+		var locationGroup = locationDimension.group();
+
+		var colorScale = d3.scale.ordinal().domain(["SS", "IP", "B", "F", "SL" ])
+		.range(["#ff0000", "#0000ff", "#4fc94f", "#ff0000", "#ff0000"]);
+
+
+		locationChart.width(400)
+			.height(400)
+			.x(d3.scale.linear().domain([-3, 3]))
+			.y(d3.scale.linear().domain([0,5.5]))
+			.yAxisLabel("y")
+			.xAxisLabel("x")
+			.clipPadding(10)
+			.dimension(locationDimension)
+			.excludedOpacity(0.5)
+			.group(locationGroup)
+			.title(function(d){
+				if(d.key[6]==undefined)
+					d.key[6] = "NA";
+				var information = "Inning: "+ d.key[3]+"\nCount: "+d.key[7]+" & "+d.key[8]+"\nVelocity: "+d.key[4]+"\nType: "+d.key[5]+"\nResult: "+d.key[2]+"\nPlay Result: "+d.key[6]+"\nBatter: "+d.key[9];
+				return information;
+			})
+			.brushOn(false)
+			.colorAccessor(function(d) {
+				return d.key[2];
+			})
+			.colors(colorScale)
+			.brushOn(document.getElementById("drawable").checked);
+
+		var playResult = ndx.dimension(function(d){
+    	//return d.paResult;
+			if(d.playResult != undefined)
+				return d.playResult;
+			else
+				return "NA";
+		});
+
+		var paResultGroup = playResult.group().reduceCount(function(d){
+    	//return d.paResult;
+			if(d.playResult!=undefined)
+				return d.playResult;
+			else 
+				return "NA";
+		});
+
+		var filteredFunctionAmountGroup = {
+			all: function () {
+				return paResultGroup.top(Infinity).filter( function (d) { 
+					return d.key !== "NA";
+				} );
+			}
+		};
+		
+		playResultChart
+			.width(450)
+			.height(250)
+			.dimension(playResult)
+			.group(filteredFunctionAmountGroup)
+			.elasticY(true)
+			.x(d3.scale.ordinal().domain(["LD","K", "BB","GB", "PU", "FB",  "S", "D", "T", "HR"])) // Need empty val to offset first value
+			.xUnits(dc.units.ordinal) ;
+
+		var handedness = ndx.dimension(function(d){
+			return d.batterHand;
+		});
+
+		var handedGroup = handedness.group().reduceCount(function(d){
+			return d.batterHand;
+		});
+		
+         handChart 
+			.width(200)
+			.height(200)
+			.margins({top: 20, left: 10, right: 10, bottom: 20})
+			.group(handedGroup)
+			.dimension(handedness)
+            .ordinalColors(['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#dadaeb'])
+			.label(function (d) {
+				return d.key;
+			})
+			.title(function (d) {
+				return d.value;
+			})
+			.elasticX(true)
+			.xAxis().ticks(4);
+
+		var timesFacedDim = ndx.dimension(function(d){
+			return d.timesFaced;
+		});
+		
+		var timesFacedGroup = timesFacedDim.group().reduceCount(function(d){
+			return d.timesFaced;
+		});
+		
+		timesFacedChart
+			.width(200)
+			.height(200)
+			.radius(100)
+			.dimension(timesFacedDim)
+			.group(timesFacedGroup)
+			.label(function(d){
+				return d.key;
+			});
+
+		var pitchTypes = ndx.dimension(function (d) {
+			return d.pitchType;
+		});
+
+		var pitchTypeGroup = pitchTypes.group().reduceCount(function(d){
+			return d.pitchType;
+		});
+
+
+		var filteredPitchGroup = {
+			all: function () {
+				return pitchTypeGroup.top(Infinity).filter( function (d) { 
+					return d.key !== "PO" && d.key!=="UN" && d.key !=="IN";
+				} );
+			}
+		}
+		
+		var eyedim = ndx.dimension(function(d){
+			return d.eye;
+		});
+		
+		var eyeGroup = eyedim.group().reduceCount(function(d){
+			return d.eye;
+		});
+		
+		opChart
+			.width(200)
+			.height(200)
+			.margins({top:20, left:10, right: 10, bottom: 20})
+			.group(eyeGroup)
+			.dimension(eyedim)
+			.ordinalColors(['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#dadaeb'])
+			.label(function(d){
+				return d.key;
+			})
+			.title(function(d){
+				if(d.key == "SS")
+					return "Strikes Swung On: "+d.value;
+				if(d.key == "BS")
+					return "Balls Swung On: " + d.value;
+				if(d.key =="BW")
+					return "Balls Watched: " + d.value;
+				if(d.key == "SW") 
+					return "Strikes Watched: " + d.value;
+				
+			})
+			.elasticX(true)
+			.xAxis().ticks(5);
+		
+
+		var pitchPercentageGroup = pitchTypes.group();
+		
+		typeChart
+			.width(200)
+			.height(200)
+			.radius(100)
+			.dimension(pitchTypes)
+			.group(filteredPitchGroup)
+			.label(function (d) {
+				if (typeChart.hasFilter() && !typeChart.hasFilter(d.key)) {
+					return d.key + '(0%)';
+				}
+				var label = d.key;
+				if (all.value()) {
+					label += '(' + Math.floor(d.value / all.value() * 100) + '%)';
+				}
+				return label;
+				})
+			.renderLabel(true)
+			.transitionDuration(1000);	
+
+		var ballsInCount = ndx.dimension(function(d){
+			return d.balls;
+		});
+
+		var ballsGroup = ballsInCount.group().reduceCount(function(d){
+			return d.balls;
+		});
+		
+		ballChart
+			.width(200)
+			.height(200)
+			.radius(100)
+			.innerRadius(40)
+			.dimension(ballsInCount)
+			.group(ballsGroup)
+			.transitionDuration(1000);
+
+		var strikesInCount = ndx.dimension(function(d){
+			return d.strikes;
+		});
+
+		var strikesGroup = strikesInCount.group().reduceCount(function(d){
+			return d.strikes;
+		});
+		
+		strikeChart
+			.width(200)
+			.height(200)
+			.radius(100)
+			.innerRadius(40)
+			.dimension(strikesInCount)
+			.group(strikesGroup)
+			.transitionDuration(1000);
+
+
+		var inning = ndx.dimension(function(d){
+			return d.inning;
+		});
+
+		var inningGroup = inning.group().reduceCount(function(d){
+			return d.inning;
+		});
+	
+	     inningChart2
+			.width(450)
+			.height(250)
+			.x(d3.scale.linear().domain([minInning,maxInning+1]))
+   // .brushOn(false)
+			.yAxisLabel("Pitches")
+			.dimension(inning)
+			.group(inningGroup)
+			.elasticY(true);
+
+
+		var veloAvgByInning = new Array();
+
+		if(pitchList.indexOf("UN") !== -1)
+			pitchList.splice(pitchList.indexOf("UN"), 1);
+		if(pitchList.indexOf("PO")!== -1)
+			pitchList.splice(pitchList.indexOf("PO"), 1);
+		if(pitchList.indexOf("IN")!== -1)
+			pitchList.splice(pitchList.indexOf("IN"), 1);
+
+		pitchList.forEach(function(d){
+			var average = inning.group().reduce(
+				function reduceAdd(p, v) {
+					p.pitchType = v.pitchType;
+					if(v.pitchType == d){
+						++p.pitches;
+						p.total += Number(v.releaseVelocity);
+					}
+					if(p.pitches==0)
+						p.avg=-10000;
+					else
+						p.avg = (p.total / p.pitches);
+					return p;
+				},
+				function reduceRemove(p, v) {
+					p.pitchType = v.pitchType;
+					if(v.pitchType == d){
+						--p.pitches;
+						p.total -= Number(v.releaseVelocity);
+					}
+					if(p.pitches==0)
+						p.avg=-10000;
+					else
+						p.avg = (p.total / p.pitches);
+					return p;
+				},
+				function reduceInitial() {
+					return {pitches: 0, total: 0, avg: 0, pitchType : ""};
+				}
+    		);
+
+			veloAvgByInning.push(average);
+		});
+	
+	
+		
+		var moveAvgByInning = new Array();
+
+    	var averageMovement = inning.group().reduce(
+    		function reduceAdd(p, v) {
+			if(!isNaN(v.xMovement) && !isNaN(v.zMovement)){
+    			p.xMovement = v.xMovement;
+				p.zMovement = v.zMovement;
+    		
+    			++p.pitches;
+    			p.totalX += Math.abs(v.xMovement);
+				p.totalZ += Math.abs(v.zMovement);
+    			
+    			if(p.pitches==0)
+    				p.avgx=-10000, p.avgz=-10000 ;
+    			else{
+    				p.avgx = (p.totalX / p.pitches);
+					p.avgz = (p.totalZ/p.pitches);
+				}		
+					}
+    			return p;
+    		},
+    		function reduceRemove(p, v) {
+			if(!isNaN(v.xMovement) && !isNaN(v.zMovement)){
+    				--p.pitches;
+    				p.totalX -= Math.abs(v.xMovement);
+					p.totalZ -= Math.abs(v.zMovement);
+    			
+    			if(p.pitches==0)
+    				p.avgx=-10000, p.avgz=-10000;
+    			else{
+    				p.avgx = (p.totalX / p.pitches);
+					p.avgz = (p.totalZ / p.pitches);
+}
+					}
+    			return p;
+				
+    		},
+    		function reduceInitial() {
+    			return {pitches: 0, totalX: 0, totalZ:0, avgx: 0, avgz : 0};
+    		}
+    		);
+
+		velocityChart
+			.width(550)
+			.height(250)
+			.transitionDuration(1000)
+			.margins({top: 30, right: 50, bottom: 25, left: 40})
+			.dimension(inning)
+			.x(d3.scale.linear().domain([minInning,maxInning]))
+			.y(d3.scale.linear().domain([70, 103]))
+			.brushOn(false)
+			.group(veloAvgByInning, 'Average Velo');
+
+			var arrayOfCharts = new Array();
+			var colorArray = new Array("#F00", "#0F0", "#0000FF", "#F0F", "#ffa500", "#0FF");
+
+			var mphString;
+			var indexer = 0;
+
+			veloAvgByInning.forEach(function(d){
+				var ptype = pitchList[indexer];
+
+				var newChart = dc.lineChart(velocityChart)
+					.group(d, ptype)
+					.renderHorizontalGridLines(true)
+					.colors(colorArray[indexer])
+					.valueAccessor(function(d){
+						mphString = d.value.avg.toFixed(2);
+						return d.value.avg.toFixed(2);
+					})
+					.title(function(d){
+						return mphString;
+					});
+
+				indexer = indexer +1;
+				arrayOfCharts.push(newChart);
+			});
+
+        velocityChart.compose(arrayOfCharts)
+        .legend(dc.legend().x(500).y(10).itemHeight(10).gap(5));
+		
+		movementChart
+    	.width(550)
+    	.height(250)
+    	.transitionDuration(1000)
+    	.margins({top: 30, right: 50, bottom: 25, left: 40})
+    	.dimension(inning)
+		.x(d3.scale.linear().domain([minInning,maxInning]))
+		.y(d3.scale.linear().domain([0, 12]))
+        .brushOn(false)
+        .group(averageMovement, 'Average Movement')
+		//.elasticY(true);
+		
+		var movementChartsArray = new Array();
+		
+		var xChart = dc.lineChart(movementChart)
+        	.group(averageMovement, "Horizontal")
+        	.renderHorizontalGridLines(true)
+        	.colors("#F00")
+        	.valueAccessor(function(d){
+        		return d.value.avgx.toFixed(2);
+        	});
+			
+		var zChart = dc.lineChart(movementChart)
+			.group(averageMovement, "Vertical")
+			.renderHorizontalGridLines(true)
+			.colors("#00F")
+			.valueAccessor(function(d){
+				return d.value.avgz.toFixed(2);
+			});
+			
+		movementChartsArray.push(xChart);
+		movementChartsArray.push(zChart);
+		movementChart.compose(movementChartsArray);
+		movementChart.legend(dc.legend().x(500).y(10).itemHeight(10).gap(5));
+
+   dc.renderAll();
+
+   drawStrikeZone();
+   
+
+
+
+//});
+
+</script>
+
+</body>
+</html>

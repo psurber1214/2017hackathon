@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="D3byEX 6.1" />
+    <meta charset="utf-8">
+	<style>
+		circle:hover{
+			opacity: .35;
+		}
+	</style>
+	<link rel="stylesheet" href="/dc.css" type="text/css" >
+</head>
+
+<body>
+<p>
+	<div id="schart">Chart</div>
+    <script src="/d3.js"></script>
+   <script src="/crossfilter.js"> </script>
+    <script src="/dc.js"> </script>
+    <script>
+	
+	var strikeChart = dc.scatterPlot("#schart");
+	var url = "pitcher.json";
+	
+	//var data = 
+	
+	//var data = <%- JSON.stringify(data) %>;
+    d3.json(url/*data*/, function(error, rawData) {
+
+    	var ndx = crossfilter(rawData);
+    	var all = ndx.groupAll();
+
+    	var locationDimension = ndx.dimension(function(d){
+    		return [d.px, d.pz, d.pitchResult];
+    	});
+
+    	var locationGroup = locationDimension.group();
+
+    	var colorScale = d3.scale.ordinal()
+    .domain(["B", "SS", "SL", "IP", "F"]) // recipe names
+.range(["#FF0000", "#00FF00", "#0000FF", "#000000", "#DDDD23"]);
+
+    	strikeChart.width(500)
+    	.height(500)
+    	.x(d3.scale.linear().domain([-4,4]))
+    	.yAxisLabel("y")
+    //	.xAxisLabel("x")
+    	.dimension(locationDimension)
+    	.excludedOpacity(.7)
+    	.group(locationGroup)
+    	.brushOn(false)
+    	.colorAccessor(function(d){
+    		return d.key[2];
+    	})
+    	.title(function(d){
+    		return d.key[2];
+    	});
+
+    	dc.renderAll();
+
+    	/*strikeChart.width(400)
+    	.height(400)
+    	.x(d3.scale.linear().domain[-4, 4])
+    	.y(d3.scale.linear().domain[-.4, 8])
+    	.yAxisLabel("Height")
+    	.xAxisLabel("Position")
+    	.dimension(locationDimension)
+    	.group(locationGroup)
+    	.excludedOpacity(.7);*/
+
+
+	
+		
+      /*  var data = rawData.map(function(d) {
+            return { V: +d.releaseVelocity, X: +d.px, Y: +d.pz }
+        });
+
+        var xExtents = d3.extent(data, function (d) { return d.X; });
+        var yExtents = d3.extent(data, function (d) { return d.Y; });
+
+		var concatExtents = xExtents.concat(yExtents);
+        var maxExtent = d3.max(
+            xExtents.concat(yExtents), function(d) { 
+			return Math.abs(d); 
+			});
+
+			
+		var color = d3.scale.linear().domain([60, 105])
+			.interpolate(d3.interpolateHcl)
+			.range([d3.rgb('#0000ff'), d3.rgb('#ff0000')]);
+			
+			
+        var graphWidth = 400, graphHeight = 400;
+        var radius = 5;
+
+        var scale = d3.scale.linear()
+            .domain([-maxExtent, maxExtent])
+            .range([0, graphWidth]);
+
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('width', graphWidth)
+            .attr('height', graphHeight);
+			
+		
+		var rectangle = svg.append("rect")
+		.attr("x", 100)
+		.attr("y", 100)
+		.attr("width", 200)
+		.attr("height", 200);
+		
+
+        svg.selectAll('circle')
+            .data(data)
+            .enter()
+            .append('circle')
+			.style("fill", function(d){
+			return color(d.V);})
+			.style('stroke', 'black')
+			.style('stroke-width', '1')
+            .attr({
+                cx: function(d) {return scale(d.X); },
+                cy: function(d) { return scale(d.Y); },
+                r: radius
+            })
+			.append("svg:title")
+			.text(function(d) {return ""+d.X+","+d.Y;})
+			.on("mouseover", function() {
+				d3.select(this).classed("hover", true);
+			})
+			.on("mouseout", function() {
+				d3.select(this).classed("hover", false);
+			});*/
+    });
+    </script>
+</body>
+</html> 
