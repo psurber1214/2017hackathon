@@ -3,6 +3,10 @@ TruMedia Networks sponsored a Hackathon in February 2017. We entered as engineer
 
 We wrote a very simple Node server which simply grabs information from a Mongo Database and passes the resulting JSON to our front end where we used D3.js, Crossfilter, and DCjs to display interactive charts and visualizations.
 
+#Hosting
+As of February 2017, the project is currently hosted at http://athwp.tamu.edu:8080 (which displays Jake Arieta's Dashboard by default, where the users can search for and view other hitters and pitchers)
+
+
 #Database/Back End
 The database is a MongoDB hosting all of the information given to us from the 2016 season, minus a few unnecessary columns. We chose Mongo and Node because they are very lightweight and fast, a necessity for such a large dataset.
 
