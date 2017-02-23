@@ -14,3 +14,6 @@ The database is a MongoDB hosting all of the information given to us from the 20
 The app is split up into 2 different Dashboards- one for pitchers and batters. Both give a searchable list of hitters/pitchers in the top area where the user can browse to different pitchers and hitters dashboards. Most charts are pretty self explanatory. For the Deceptiveness Chart (Pitchers) and Eye/Patience Chart (Batters) we look at pitches in an out of the strike zone that were watched or swung on. To calculate movement, we used equations given by The Physics of Baseball (http://baseball.physics.illinois.edu/)
 
 All charts are interactive and "selectable" minus the Pitching Charts for Velocity and Movement over time. This allows the user to perform multi-dimensional queries on the data. For example, the user can select specific counts and see what pitches a pitcher threw to right handers as well as the results. Or the user can select specific innings and see how the pitcher's location changed over time. 
+
+#NOTE
+To look up a player, type their name into the search bar and then click their name in the drop-down menu. Sadly, due to timing, the player's ID number needs to be in the search bar when you click the "Go" button in order to properly look their name up. Typing in a name and clicking "Go" doesn't work as of now.
